@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!--配置开发者模式,可以显示更加详细的错误信息 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<constant name="struts.multipart.maxSize" value="20971520"></constant>
+	<package name="equipmentMge" namespace="/"
+		extends="struts-default">
+		<action name="login" class="com.fuyv.action.UserAction"
+			method="Login">
+			<result name="success" type="redirect">/index.jsp</result>
+			<result name="login">/login.jsp</result>
+			<result name="invalid.token">/jsp/TokenFailed.jsp</result>
+			<interceptor-ref name="token"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="UserManageRole"
+			class="com.fuyv.action.UserAction" method="User_Manage_Role">
+			<result name="User_Manage_Role_Success">/jsp/userM.jsp</result>
+		</action>
+		<action name="User_*" class="com.fuyv.action.UserAction"
+			method="User_{1}">
+			<result name="User_Logout_Success">/login.jsp</result>
+			<result name="User_Add_Success">/jsp/Success.jsp</result>
+			<result name="User_Add_Fail">/jsp/userAdd.jsp</result>
+			<result name="User_Delete_Success">/jsp/userM.jsp</result>
+			<result name="User_Update_Success">/jsp/userM.jsp</result>
+		</action>
+
+
+		<action name="Delete_Area" class="com.fuyv.action.AreaAction"
+			method="Delete_Area">
+			<result>/jsp/AreaManage.jsp</result>
+		</action>
+		<action name="Add_Area" class="com.fuyv.action.AreaAction"
+			method="Add_Area">
+			<result>/jsp/Success.jsp</result>
+		</action>
+		<action name="Update_Area" class="com.fuyv.action.AreaAction"
+			method="Update_Area">
+			<result>/jsp/AreaManage.jsp</result>
+		</action>
+		<action name="Equip_*" class="com.fuyv.action.EquipmentAction"
+			method="Equip_{1}">
+			<result name="Equip_Add_Success">/jsp/Success.jsp</result>
+			<result name="Equip_Delete_Success">/jsp/equipInfo.jsp</result>
+			<result name="Equip_Update_Success">/jsp/equipInfo.jsp</result>
+		</action>
+
+		<action name="Permission_*"
+			class="com.fuyv.action.PermissionAction" method="Permission_{1}">
+			<result name="Permission_Add_Success">/jsp/Success.jsp</result>
+			<result name="Permission_Delete_Success">/jsp/permission.jsp</result>
+			<result name="Permission_Update_Success">/jsp/permission.jsp</result>
+		</action>
+
+		<action name="Role_*" class="com.fuyv.action.RoleAction"
+			method="Role_{1}">
+			<result name="Role_Add_Success">/jsp/Success.jsp</result>
+			<result name="Role_ManagePermission_Success">/jsp/juese.jsp</result>
+			<result name="Role_Delete_Success">/jsp/juese.jsp</result>
+			<result name="Role_Permission_Manage_DeleteAll_Success">/jsp/jueseF.jsp</result>
+		</action>
+		
+		<action name="RepairOrder_Add" class="com.fuyv.action.RepairOrderAction" method="RepairOrder_Add">
+			<result name="RepairOrder_Add_Success">/jsp/equipWarnManage.jsp</result>
+			<result name="input">/WEB-INF/error.jsp</result>
+			<interceptor-ref name="fileUpload">
+                <param name="allowedExtensions">jpeg,jpg,png,bmp,psd,gif</param><!-- 设置上传文件允许的后缀名，多个使用逗号分开 -->
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="RepairOrder_*" class="com.fuyv.action.RepairOrderAction" method="RepairOrder_{1}">
+			<result name="RepairOrder_Delete_Success">/jsp/equipWarnManage.jsp</result>
+			<result name="RepairOrder_Manage_Success">/jsp/fixM.jsp</result>
+			<result name="RepairOrder_Record_Success">/jsp/fixDo.jsp</result>
+			<result name="RepairOrder_PepairUser_Add_Success">/jsp/equipWarnManage2.jsp</result>
+		</action>
+	</package>
+
+</struts>

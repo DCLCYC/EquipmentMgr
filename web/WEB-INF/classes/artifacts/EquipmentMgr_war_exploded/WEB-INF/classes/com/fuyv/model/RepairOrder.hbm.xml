@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2020-9-2 14:30:51 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.fuyv.model.RepairOrder" table="REPAIRORDER">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="equipment_type" type="int">
+            <column name="EQUIPMENT_TYPE" />
+        </property>
+        <property name="equipment_name" type="java.lang.String">
+            <column name="EQUIPMENT_NAME" />
+        </property>
+        <property name="equipment_build" type="int">
+            <column name="EQUIPMENT_BUILD" />
+        </property>
+        <property name="equipment_floor" type="int">
+            <column name="EQUIPMENT_FLOOR" />
+        </property>
+        <property name="equipment_address" type="java.lang.String">
+            <column name="EQUIPMENT_ADDRESS" />
+        </property>
+        <property name="image" type="java.lang.String">
+            <column name="IMAGE" />
+        </property>
+        <property name="remark" type="java.lang.String">
+            <column name="REMARK" />
+        </property>
+        <property name="record" type="java.lang.String">
+            <column name="RECORD" />
+        </property>
+        <property name="status" type="int">
+            <column name="STATUS" />
+        </property>
+        <many-to-one name="repair_user" class="com.fuyv.model.User" fetch="join" unique="true">
+            <column name="REPAIR_USER" />
+        </many-to-one>
+        <many-to-one name="service_user" class="com.fuyv.model.User" fetch="join" unique="true">
+            <column name="SERVICE_USER" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

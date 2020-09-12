@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      	      http://www.springframework.org/schema/beans/spring-beans.xsd  
+              http://www.springframework.org/schema/aop
+              http://www.springframework.org/schema/aop/spring-aop.xsd  
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd  
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx.xsd  
+			  http://www.springframework.org/schema/util
+			  http://www.springframework.org/schema/util/spring-util.xsd "
+	default-lazy-init="false">
+	
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:database.properties" />
+	<!-- 使用annotation定义事务 --><!-- 支持 @Transactional 标记 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${jdbc_driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${jdbc_url}</value>
+		</property>
+		<property name="user" value="${jdbc_username}" />
+		<property name="password" value="${jdbc_password}" />
+		<!-- 设置数据库连接池的最大连接数 -->
+		<property name="maxPoolSize">
+			<value>50</value>
+		</property>
+		<!-- 设置数据库连接池的最小连接数 -->
+		<property name="minPoolSize">
+			<value>5</value>
+		</property>
+		<!-- 设置数据库连接池的初始化连接数 -->
+		<property name="initialPoolSize">
+			<value>5</value>
+		</property>
+		<!-- 设置数据库连接池的连接的最大空闲时间,单位为秒 -->
+		<property name="maxIdleTime">
+			<value>20</value>
+		</property>
+		<!--c3p0缓存Statement的数量数 -->
+		<property name="maxStatements">
+			<value>50</value>
+		</property>
+		<!-- 当连接池里面的连接用完的时候，C3P0一下获取的新的连接数 -->
+		<property name="acquireIncrement">
+			<value>20</value>
+		</property>
+	</bean>
+	
+	<!-- 配置hibernate的sessionFactory，虽然可以通过dao继承HibernateTemplate的方式来操作数据库，但是。。。 -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingLocations">
+        	<value>classpath:/com/fuyv/model/*.hbm.xml</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<!-- 解决session关闭问题 -->
+				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 自己所需的bean -->
+	<!-- ①：用户action和dao层 -->
+	<bean id="userDao" class="com.fuyv.daoimpl.UserDaoImpl">
+			<property name="sessionFactory">
+				<ref bean="sessionFactory"></ref>
+			</property>
+	</bean>
+	<bean id="userAction" class="com.fuyv.action.UserAction">
+		<property name="userDao">
+			<ref bean="userDao"></ref>
+		</property>
+	</bean>
+	
+	<!--②：区域action和dao层 -->
+	<bean id="areaDao" class="com.fuyv.daoimpl.AreaDaoImpl">
+			<property name="sessionFactory">
+				<ref bean="sessionFactory"></ref>
+			</property>
+	</bean>
+	<bean id="areaAction" class="com.fuyv.action.AreaAction">
+		<property name="areaDao">
+			<ref bean="areaDao"></ref>
+		</property>
+	</bean>
+	
+	<!--③：设备action和dao层 -->
+	<bean id="equipmentDao" class="com.fuyv.daoimpl.EquipmentDaoImpl">
+			<property name="sessionFactory">
+				<ref bean="sessionFactory"></ref>
+			</property>
+	</bean>
+	<bean id="equipmentAction" class="com.fuyv.action.EquipmentAction">
+		<property name="equipmentDao">
+			<ref bean="equipmentDao"></ref>
+		</property>
+	</bean>
+	
+	<!--④：权限action和dao层 -->
+	<bean id="permissionDao" class="com.fuyv.daoimpl.PermissionDaoImpl">
+			<property name="sessionFactory">
+				<ref bean="sessionFactory"></ref>
+			</property>
+	</bean>
+	<bean id="permissionAction" class="com.fuyv.action.PermissionAction">
+		<property name="permissionDao">
+			<ref bean="permissionDao"></ref>
+		</property>
+	</bean>
+	
+	<!--⑤：报修单action和dao层 -->
+	<bean id="repairOrderDao" class="com.fuyv.daoimpl.RepairOrderDaoImpl">
+			<property name="sessionFactory">
+				<ref bean="sessionFactory"></ref>
+			</property>
+	</bean>
+	<bean id="repairOrderAction" class="com.fuyv.action.RepairOrderAction">
+		<property name="repairOrderDao">
+			<ref bean="repairOrderDao"></ref>
+		</property>
+	</bean>
+	
+	<!--⑥：角色action和dao层 -->
+	<bean id="roleDao" class="com.fuyv.daoimpl.RoleDaoImpl">
+			<property name="userDao">
+				<ref bean="userDao"></ref>
+			</property>
+			<property name="sessionFactory">
+				<ref bean="sessionFactory"></ref>
+			</property>
+	</bean>
+	<bean id="roleAction" class="com.fuyv.action.RoleAction">
+		<property name="roleDao">
+			<ref bean="roleDao"></ref>
+		</property>
+	</bean>
+	
+</beans>

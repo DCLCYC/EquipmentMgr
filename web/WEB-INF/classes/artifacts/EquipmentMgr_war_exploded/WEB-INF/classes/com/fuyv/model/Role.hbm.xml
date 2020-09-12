@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2020-9-2 14:30:51 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.fuyv.model.Role" table="D_Role">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="type" type="int">
+            <column name="TYPE" />
+        </property>
+        <set name="role_permission_set" table="D_Role_Permission" inverse="false" lazy="false">
+            <key>
+                <column name="ROLE_ID" />
+            </key>
+            <many-to-many class="com.fuyv.model.Permission" column="PERMISSION_ID"></many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
