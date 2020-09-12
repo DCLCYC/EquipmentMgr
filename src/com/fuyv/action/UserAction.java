@@ -72,7 +72,7 @@ public class UserAction extends ActionSupport implements ModelDriven<User> {
 
 	public String User_Add() {
 
-		System.out.println("已经进入action层的userAction的添加用户方法！");
+		System.out.println("已经进入userAction的添加用户方法！");
 		System.out.println("从前台获取到的数据通过值栈传输后为：昵称--->" + user.getNickname() 
 		+ "，账户--->" + user.getAccount() + "，密码--->"+ user.getPassword());
 		
