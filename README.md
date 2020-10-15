@@ -1,7 +1,7 @@
 # 实训项目---设备报修管理系统
 
 #### 介绍
-  本项目是实训要求提交的大作业，实现了一个简单的设备报修管理系统。开发环境：Eclipse+JDK8+Tomcat9.0+MySQL8。使用技术：Struts2+Hibernate5+Spring5框架，LayUI前端模板。
+  本项目是实训要求提交的大作业，实现了一个简单的设备报修管理系统。开发环境：Eclipse（后将项目移植到Idea上）+JDK8+Tomcat9.0+MySQL8。使用技术：Struts2+Hibernate5+Spring5框架，LayUI前端模板。
 
 #### 软件架构
 
